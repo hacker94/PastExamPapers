@@ -10,6 +10,8 @@
 
     <title>PastExamPapers</title>
 
+
+
     <!-- Bootstrap core CSS -->
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     
@@ -52,7 +54,8 @@
     </div>
 
     <div class="container">
-      <div class="row" id="papers">
+      <div id="paper_pos" class="row" id="papers">
+      <!--
         <ul class="nav nav-tabs nav-justified">
           <li class="active"><a href="#g1a" data-toggle="tab">大一-上</a></li>
           <li><a href="#g1b" data-toggle="tab">大一-下</a></li>
@@ -63,6 +66,7 @@
           <li><a href="#g4a" data-toggle="tab">大四-上</a></li>
           <li><a href="#g4b" data-toggle="tab">大四-下</a></li>
         </ul>
+        
         <div class="tab-content">
           <div class="tab-pane fade in active" id="g1a">
             <table class="table table-bordered table-striped">
@@ -169,7 +173,7 @@
                                      
           <div class="tab-pane fade" id="g4b">
           </div>                     
-        </div>
+        </div>-->
       </div>
 
       <hr>
@@ -183,6 +187,17 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <script>      
+      $(document).ready(function () {
+        $("#paper_pos").load("../app/papergen.php", function(responseText, statusText, xhr) {
+          $("li.litab").click(function () {
+            var date = new Date();
+            date.setTime(date.getTime() + 365 * 24 * 3600 * 1000); 
+            document.cookie = "lasttab=" + this.id + ";expires=" + date.toGMTString() + ";path=/";
+          });
+        });
+      });
+    </script>
     <script src="./js/bootstrap.min.js"></script>
   </body>
 </html>
