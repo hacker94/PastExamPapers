@@ -21,6 +21,10 @@
       return '<a href="'.$href.'">'.$content.'</a>';
     }
   }
+  
+  function strip_suffix($name) {
+    return substr($name, 0, strlen($name) - strlen(strrchr($name, '.')));
+  }
 
   // vars
   $tabs = array();
@@ -60,10 +64,19 @@
   echo '<div class="tab-content">';
   $first = true;
   foreach ($tabs as $tab) {
-    if ($first) {
-      echo '<div class="tab-pane fade in active" id="'.$tab.'">';
+    if (isset($_COOKIE["lasttab"])) {
+      if ($lasttab == 'tab'.$tab) {
+        echo '<div class="tab-pane fade in active" id="'.$tab.'">';
+      } else {
+        echo '<div class="tab-pane fade" id="'.$tab.'">';
+      }
     } else {
-      echo '<div class="tab-pane fade" id="'.$tab.'">';
+      if ($first) {
+        echo '<div class="tab-pane fade in active" id="'.$tab.'">';
+      } else {
+        echo '<div class="tab-pane fade" id="'.$tab.'">';
+      }
+      $first = false;
     }
     echo '<table class="table table-bordered table-hover"><tbody>';
     $year = dir($paper_root.'/'.$tab);
@@ -91,10 +104,10 @@
           if (!$a) {
             echo '&nbsp;/&nbsp;';
           }
-          echo wrap_a($paper_root.'/'.$tab.'/'.$course.'/'.$paper, false, $paper);
+          echo wrap_a($paper_root.'/'.$tab.'/'.$course.'/'.$paper, false, strip_suffix($paper));
           $a = false;
       }
-      echo '</td><tr>';
+      echo '</td></tr>';
     }                  
     echo '</tbody></table></div>';
     $first = false;
