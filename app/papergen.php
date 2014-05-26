@@ -1,6 +1,5 @@
 <?php
 
-
   // functions
   function wrap_ul($lis) {
     return '<ul class="nav nav-tabs">  '.$lis.'  </ul>';
