@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PastExamPapers">
     <meta name="author" content="SY.WANG">
-    <link rel="shortcut icon" href="./ico/favicon.png">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.png">
 
     <title>PastExamPapers</title>
 
+    {% load staticfiles %}
     <!-- Bootstrap core CSS -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     
     <style type="text/css">
       body {
@@ -53,122 +54,41 @@
 
     <div class="container">
       <div class="row" id="papers">
-        <ul class="nav nav-tabs nav-justified">
-          <li class="active"><a href="#g1a" data-toggle="tab">大一-上</a></li>
-          <li><a href="#g1b" data-toggle="tab">大一-下</a></li>
-          <li><a href="#g2a" data-toggle="tab">大二-上</a></li>
-          <li><a href="#g2b" data-toggle="tab">大二-下</a></li>
-          <li><a href="#g3a" data-toggle="tab">大三-上</a></li>
-          <li><a href="#g3b" data-toggle="tab">大三-下</a></li>
-          <li><a href="#g4a" data-toggle="tab">大四-上</a></li>
-          <li><a href="#g4b" data-toggle="tab">大四-下</a></li>
+        <ul class="nav nav-tabs">
+          {% for tab in tabs %}
+            {% if forloop.first %}
+              <li class="active"><a href="#{{ tab.name }}" data-toggle="tab">{{ tab.name }}</a></li>
+            {% else %}
+              <li><a href="#{{ tab.name }}" data-toggle="tab">{{ tab.name }}</a></li>
+            {% endif %}
+          {% endfor %}
         </ul>
         <div class="tab-content">
-          <div class="tab-pane fade in active" id="g1a">
-            <table class="table table-bordered table-striped">
+
+          {% for tab in tabs %}
+            {% if forloop.first %}
+              <div class="tab-pane fade in active" id="{{ tab.name }}">
+            {% else %}
+              <div class="tab-pane fade" id="{{ tab.name }}">
+            {% endif %}
+
+            <table class="table table-bordered table-hover">
               <tbody>
-                <tr>
-                  <th>1</th>
-                  <th>数学分析</th>
-                  <td>
-                    <a href="./papers/g1a/1/2010.zip">2010</a>
-                    /
-                    <a>2011</a>
-                    /
-                    <a>2012</a>
-                    /
-                    <a>2013</a>
-                  </td>
-                </tr>
-                <tr>
-                  <th>2</th>
-                  <th>线性代数</th>
-                  <td>
-                    <a>2012</a>
-                    /
-                    <a>2013</a>
-                  </td>
-                </tr>
-                <tr>
-                  <th>3</th>
-                  <th>C程序设计</th>
-                  <td>
-                    <a>2012</a>
-                    /
-                    <a>2013</a>
-                  </td>
-                </tr>
+                {% for course in tab.courses %}
+                  <tr>
+                    <th>{{ course.name }}</th>
+                    <td>
+                      {% for paper in course.papers %}
+                      <a href="{{ paper.url }}">{{ paper.noSuffixName }}</a>
+                      {% endfor %}
+                    </td>
+                  </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
-          
-          <div class="tab-pane fade" id="g1b">
-            <table class="table table-bordered table-striped">
-              <tbody>
-                <tr>
-                  <th>1</th>
-                  <th>数学分析</th>
-                  <td>
-                    <a>2011</a>
-                    /
-                    <a>2012</a>
-                    /
-                    <a>2013</a>
-                  </td>
-                </tr>
-                <tr>
-                  <th>2</th>
-                  <th>线性代数</th>
-                  <td>
-                    <a>2012</a>
-                    /
-                    <a>2013</a>
-                    /
-                    <a>2014</a>
-                  </td>
-                </tr>
-                <tr>
-                  <th>3</th>
-                  <th>离散数学</th>
-                  <td>
-                    <a>2012</a>
-                    /
-                    <a>2013</a>
-                  </td>
-                </tr>
-                <tr>
-                  <th>4</th>
-                  <th>大学物理</th>
-                  <td>
-                    <a>2012</a>
-                    /
-                    <a>2013</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-                        
-          </div>                     
-                                     
-          <div class="tab-pane fade" id="g2a">
-                                    
-          </div>                     
-                                     
-          <div class="tab-pane fade" id="g2b">
-                                   
-          </div>                     
-                                     
-          <div class="tab-pane fade" id="g3a">
-          </div>                     
-                                     
-          <div class="tab-pane fade" id="g3b">
-          </div>                     
-                                     
-          <div class="tab-pane fade" id="g4a">
-          </div>                     
-                                     
-          <div class="tab-pane fade" id="g4b">
-          </div>                     
+          {% endfor %}
+
         </div>
       </div>
 
@@ -183,6 +103,6 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-    <script src="./js/bootstrap.min.js"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
   </body>
 </html>
